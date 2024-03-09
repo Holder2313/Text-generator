@@ -16,8 +16,7 @@ function App() {
       messages: [
         {
           role: "system",
-          content:
-            "invente une blaque avec les éléments suivants:  " ,
+          content: "invente une blaque avec les éléments suivants:  ",
         },
         {
           role: "user",
@@ -33,16 +32,17 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': "Bearer " + API_KEY
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_SECRET_KEY}`,
       },
-      body: JSON.stringify(APIBody)
-    }).then((data) => {
-      return data.json()
-    }).then((data) => {
-      console.log(data);
-      setSentiment(data.choices[0].message.content.trim())
+      body: JSON.stringify(APIBody),
     })
-    
+      .then((data) => {
+        return data.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setSentiment(data.choices[0].message.content.trim());
+      });
   }
 
   console.log(tweet);
@@ -50,20 +50,16 @@ function App() {
   return (
     <>
       <div className="form">
-        
-          <textarea
-            onChange={(e) => setTweet(e.target.value)}
-            name=""
-            id=""
-            cols={50}
-            rows={10}
-            placeholder=" Entrez un mot pour créer une blague."
-          ></textarea>
-       
+        <textarea
+          onChange={(e) => setTweet(e.target.value)}
+          name=""
+          id=""
+          cols={50}
+          rows={10}
+          placeholder=" Entrez un mot pour créer une blague."
+        ></textarea>
 
-        <button onClick={callOpenAIAPI}>
-          Creer une blague
-        </button>
+        <button onClick={callOpenAIAPI}>Creer une blague</button>
         {sentiment !== "" ? <h3 className="response">{sentiment} </h3> : null}
       </div>
     </>
